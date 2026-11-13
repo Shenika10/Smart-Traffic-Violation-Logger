@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Violation Added</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Violation Added Successfully!</h1>
+
+    <p class="success-message">
+        The traffic violation has been recorded successfully.
+    </p>
+
+    <div class="button-group">
+
+        <a href="/add-violation" class="btn">
+            Add Another Violation
+        </a>
+
+        <a href="/history" class="btn">
+            View Violation History
+        </a>
+
+        <a href="/" class="btn">
+            Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

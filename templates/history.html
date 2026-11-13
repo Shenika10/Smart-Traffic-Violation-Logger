@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Violation History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Violation History</h1>
+
+        <!-- Search and Filter Form -->
+
+        <form method="GET" action="/history">
+
+            <div class="filter-box">
+
+                <div>
+                    <label for="vehicle_number">
+                        Search Vehicle Number:
+                    </label>
+
+                    <input
+                        type="text"
+                        id="vehicle_number"
+                        name="vehicle_number"
+                        placeholder="Enter vehicle number"
+                    >
+                </div>
+
+                <div>
+                    <label for="violation_type">
+                        Violation Type:
+                    </label>
+
+                    <select id="violation_type"
+                            name="violation_type">
+
+                        <option value="">All Violations</option>
+                        <option value="No Helmet">No Helmet</option>
+                        <option value="Overspeeding">Overspeeding</option>
+                        <option value="Signal Violation">Signal Violation</option>
+                        <option value="No Seat Belt">No Seat Belt</option>
+                        <option value="Drunk Driving">Drunk Driving</option>
+
+                    </select>
+                </div>
+
+                <div>
+                    <label for="status">
+                        Payment Status:
+                    </label>
+
+                    <select id="status" name="status">
+
+                        <option value="">All Status</option>
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Paid">Paid</option>
+
+                    </select>
+                </div>
+
+                <button type="submit">
+                    Search / Filter
+                </button>
+
+            </div>
+
+        </form>
+
+
+        {% if violations %}
+
+        <div class="table-container">
+
+            <table>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Vehicle Number</th>
+                    <th>Violation Type</th>
+                    <th>Location</th>
+                    <th>Date</th>
+                    <th>Fine Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>QR Code</th>
+                    <th>Delete</th>
+                </tr>
+
+
+                {% for violation in violations %}
+
+                <tr>
+
+                    <td>{{ violation.id }}</td>
+
+                    <td>{{ violation.vehicle_number }}</td>
+
+                    <td>{{ violation.violation_type }}</td>
+
+                    <td>{{ violation.location }}</td>
+
+                    <td>{{ violation.date }}</td>
+
+                    <td>₹{{ violation.fine_amount }}</td>
+
+
+                    <td>
+
+                        {% if violation.status == "Paid" %}
+
+                            <span class="paid">
+                                Paid
+                            </span>
+
+                        {% else %}
+
+                            <span class="unpaid">
+                                Unpaid
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        {% if violation.status == "Unpaid" %}
+
+                            <form
+                                method="POST"
+                                action="/mark-paid/{{ violation.id }}"
+                            >
+
+                                <button type="submit">
+                                    Mark as Paid
+                                </button>
+
+                            </form>
+
+                        {% else %}
+
+                            <span class="paid">
+                                Paid
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        <a href="/violation/{{ violation.id }}">
+
+                           <img
+                                src="{{ url_for(
+                                     'static',
+                                      filename='qrcodes/violation_' ~ violation.id ~ '.png'
+                                ) }}"
+                                width="100"
+                                height="100"
+                                alt="QR Code"
+                        >
+
+                        </a>
+
+                    </td>
+
+
+                    <td>
+
+                        <form
+                            method="POST"
+                            action="/delete-violation/{{ violation.id }}"
+                        >
+
+                            <button
+                                type="submit"
+                                class="delete-button"
+                            >
+                                Delete
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+            <p class="no-records">
+                No violation records found.
+            </p>
+
+        {% endif %}
+
+
+        <div class="page-links">
+
+            <a href="/add-violation">
+                Add New Violation
+            </a>
+
+            <a href="/">
+                Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Traffic Violation Details</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container details-container">
+
+        <h1>Traffic Violation Details</h1>
+
+        <div class="details-card">
+
+            <p>
+                <strong>Vehicle Number:</strong>
+                {{ violation.vehicle_number }}
+            </p>
+
+            <p>
+                <strong>Violation Type:</strong>
+                {{ violation.violation_type }}
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                {{ violation.location }}
+            </p>
+
+            <p>
+                <strong>Date:</strong>
+                {{ violation.date }}
+            </p>
+
+            <p>
+                <strong>Fine Amount:</strong>
+                ₹{{ violation.fine_amount }}
+            </p>
+
+            <p>
+                <strong>Payment Status:</strong>
+
+                {% if violation.status == "Paid" %}
+
+                    <span class="paid">Paid</span>
+
+                {% else %}
+
+                    <span class="unpaid">Unpaid</span>
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+        <div class="page-links">
+
+            <a href="/history">
+                Back to Violation History
+            </a>
+
+            <a href="/">
+                Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
